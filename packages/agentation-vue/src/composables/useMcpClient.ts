@@ -1,5 +1,7 @@
 import type { Annotation } from '../types'
-import { settings } from './useSettings'
+import { useSettings } from './useSettings'
+
+const { settings } = useSettings()
 
 interface McpSession {
   id: string
@@ -31,7 +33,7 @@ function clearSession() {
 }
 
 async function apiFetch(path: string, options: RequestInit = {}): Promise<Response | null> {
-  const url = (settings as any).mcpUrl
+  const url = settings.mcpUrl
   if (!url) return null
 
   try {
