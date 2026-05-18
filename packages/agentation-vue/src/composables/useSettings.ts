@@ -25,6 +25,7 @@ const defaults: Settings = {
   theme: 'auto',
   activationKey: 'Shift',
   peekKey: 'none',
+  mcpUrl: '',
 }
 
 function loadSettings(): Settings {

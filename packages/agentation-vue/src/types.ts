@@ -63,6 +63,7 @@ export interface AgentationProps {
   theme?: 'light' | 'dark' | 'auto'
   activationKey?: 'none' | 'Meta' | 'Alt' | 'Shift'
   disablePortal?: boolean
+  mcpUrl?: string
 }
 
 export interface AgentationEmits {
@@ -84,6 +85,7 @@ export interface Settings {
   theme: 'light' | 'dark' | 'auto'
   activationKey: 'none' | 'Meta' | 'Alt' | 'Shift'
   peekKey: 'none' | 'Meta' | 'Alt' | 'Shift' | 'Control'
+  mcpUrl: string
 }
 
 export interface StorageAdapter {

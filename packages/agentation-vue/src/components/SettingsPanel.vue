@@ -169,5 +169,18 @@ function toggleTheme() {
         </option>
       </select>
     </div>
+
+    <div class="__va-settings-divider" />
+
+    <div class="__va-settings-row __va-settings-row--stack">
+      <span class="__va-settings-label">MCP Server URL</span>
+      <input
+        type="text"
+        class="__va-mcp-url-input"
+        placeholder="http://localhost:4747"
+        :value="settings.mcpUrl"
+        @input="update('mcpUrl', ($event.target as HTMLInputElement).value)"
+      >
+    </div>
   </div>
 </template>

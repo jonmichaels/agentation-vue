@@ -1,5 +1,6 @@
 import type { Annotation, StorageAdapter } from '../types'
 import { ref } from 'vue-demi'
+import { mcpSyncAnnotation, mcpUpdateAnnotation, mcpDeleteAnnotation, mcpClearAnnotations } from './useMcpClient'
 
 const STORAGE_KEY = 'agentation-vue-annotations'
 type AnnotationStore = Record<string, Annotation[]>
@@ -107,6 +108,7 @@ function addAnnotation(annotation: Omit<Annotation, 'id' | 'timestamp'>): Annota
   }
   annotations.value.push(full)
   save()
+  void mcpSyncAnnotation(full)
   return full
 }
 
@@ -116,6 +118,7 @@ function removeAnnotation(id: string): Annotation | undefined {
     return undefined
   const [removed] = annotations.value.splice(index, 1)
   save()
+  void mcpDeleteAnnotation(removed.id)
   return removed
 }
 
@@ -125,6 +128,7 @@ function updateAnnotation(id: string, updates: Partial<Annotation>): Annotation 
     return undefined
   Object.assign(ann, updates)
   save()
+  void mcpUpdateAnnotation(ann.id, ann)
   return ann
 }
 
@@ -133,6 +137,7 @@ function clearAnnotations(): Annotation[] {
   annotations.value.splice(0)
   counter = 0
   save()
+  void mcpClearAnnotations()
   return cleared
 }
 

@@ -57,6 +57,7 @@ const props = withDefaults(
     theme?: 'light' | 'dark' | 'auto'
     activationKey?: 'none' | 'Meta' | 'Alt' | 'Shift'
     disablePortal?: boolean
+    mcpUrl?: string
   }>(),
   {
     copyToClipboard: true,
@@ -317,6 +318,14 @@ watch(
   (v) => {
     if (v !== undefined)
       settings.activationKey = v
+  },
+  { immediate: true },
+)
+watch(
+  () => props.mcpUrl,
+  (v) => {
+    if (v !== undefined)
+      settings.mcpUrl = v
   },
   { immediate: true },
 )

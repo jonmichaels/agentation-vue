@@ -39,6 +39,7 @@ export function mountAgentation(onCountChange: (count: number) => void): MountHa
 
   const app: App = createApp(AgentationVue, {
     disablePortal: true,
+    mcpUrl: 'http://localhost:4747',
     onAnnotationAdd: reportCount,
     onAnnotationDelete: reportCount,
     onAnnotationUpdate: reportCount,
