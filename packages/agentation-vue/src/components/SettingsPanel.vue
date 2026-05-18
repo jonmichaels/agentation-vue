@@ -182,5 +182,13 @@ function toggleTheme() {
         @input="update('mcpUrl', ($event.target as HTMLInputElement).value)"
       >
     </div>
+    <div class="__va-settings-row __va-settings-row--clickable" @click="onToggleRowClick('autoSendMcp', $event)">
+      <span class="__va-settings-label">Auto-send to MCP</span>
+      <VaToggle
+        :model-value="settings.autoSendMcp"
+        aria-label="Auto-send to MCP"
+        @update:model-value="update('autoSendMcp', $event)"
+      />
+    </div>
   </div>
 </template>

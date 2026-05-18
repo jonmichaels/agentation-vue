@@ -64,6 +64,10 @@ async function ensureSession(): Promise<string | null> {
   }
 }
 
+function canSend(): boolean {
+  return !!settings.mcpUrl && settings.autoSendMcp
+}
+
 function toMcpAnnotation(ann: Annotation) {
   return {
     id: ann.id,
@@ -86,7 +90,10 @@ function toMcpAnnotation(ann: Annotation) {
   }
 }
 
+// Auto-send (gated by autoSendMcp setting)
 export async function mcpSyncAnnotation(annotation: Annotation): Promise<void> {
+  if (!canSend()) return
+
   const sessionId = await ensureSession()
   if (!sessionId) return
 
@@ -97,6 +104,8 @@ export async function mcpSyncAnnotation(annotation: Annotation): Promise<void> {
 }
 
 export async function mcpUpdateAnnotation(id: string, annotation: Annotation): Promise<void> {
+  if (!canSend()) return
+
   await apiFetch(`/annotations/${id}`, {
     method: 'PATCH',
     body: JSON.stringify(toMcpAnnotation(annotation)),
@@ -104,11 +113,32 @@ export async function mcpUpdateAnnotation(id: string, annotation: Annotation): P
 }
 
 export async function mcpDeleteAnnotation(id: string): Promise<void> {
+  if (!canSend()) return
+
   await apiFetch(`/annotations/${id}`, { method: 'DELETE' })
 }
 
 export async function mcpClearAnnotations(): Promise<void> {
   clearSession()
+}
+
+// Manual send (ignores autoSendMcp — user explicitly clicked "Send to Agent")
+export async function sendAllToMcp(annotations: Annotation[]): Promise<void> {
+  if (!settings.mcpUrl) return
+
+  const sessionId = await ensureSession()
+  if (!sessionId) return
+
+  for (const ann of annotations) {
+    await apiFetch(`/sessions/${sessionId}/annotations`, {
+      method: 'POST',
+      body: JSON.stringify(toMcpAnnotation(ann)),
+    })
+  }
+}
+
+export function isMcpConfigured(): boolean {
+  return !!settings.mcpUrl
 }
 
 export function useMcpClient() {
@@ -117,5 +147,7 @@ export function useMcpClient() {
     mcpUpdateAnnotation,
     mcpDeleteAnnotation,
     mcpClearAnnotations,
+    sendAllToMcp,
+    isMcpConfigured,
   }
 }

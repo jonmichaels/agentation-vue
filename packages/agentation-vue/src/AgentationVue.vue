@@ -25,6 +25,7 @@ import {
   useKeyboardShortcuts,
 } from './composables/useKeyboardShortcuts'
 import { useMarkerPositions } from './composables/useMarkerPositions'
+import { sendAllToMcp } from './composables/useMcpClient'
 import { useMultiSelect } from './composables/useMultiSelect'
 import { useOutputFormatter } from './composables/useOutputFormatter'
 import { usePeekMode } from './composables/usePeekMode'
@@ -850,6 +851,11 @@ function onClear() {
   startUndoTimer()
 }
 
+async function onSendToAgent() {
+  if (annotations.value.length === 0) return
+  await sendAllToMcp(annotations.value)
+}
+
 function onMarkerClick(ann: Annotation) {
   // Open the annotation popup for editing
   const scrollTop = window.scrollY || document.documentElement.scrollTop
@@ -1123,6 +1129,7 @@ onBeforeUnmount(() => {
         @deactivate="onDeactivate"
         @copy="onCopy"
         @clear="onClear"
+        @send-to-agent="onSendToAgent"
         @toggle-pause="animPause.toggle"
         @toggle-area="onToggleArea"
         @update:placement="onToolbarPlacementUpdate"

@@ -86,6 +86,7 @@ export interface Settings {
   activationKey: 'none' | 'Meta' | 'Alt' | 'Shift'
   peekKey: 'none' | 'Meta' | 'Alt' | 'Shift' | 'Control'
   mcpUrl: string
+  autoSendMcp: boolean
 }
 
 export interface StorageAdapter {

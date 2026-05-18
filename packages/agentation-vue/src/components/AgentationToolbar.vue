@@ -22,6 +22,7 @@ const emit = defineEmits<{
   'deactivate': []
   'copy': []
   'clear': []
+  'send-to-agent': []
   'toggle-pause': []
   'toggle-area': [value: boolean]
   'update:placement': [value: ToolbarAnchor]
@@ -217,6 +218,11 @@ defineExpose({ expanded, placement })
         <!-- Copy -->
         <VaIconButton :disabled="annotationCount === 0" title="Copy annotations" shortcut="C" @click="$emit('copy')">
           <VaIcon name="copy" />
+        </VaIconButton>
+
+        <!-- Send to Agent -->
+        <VaIconButton :disabled="annotationCount === 0" title="Send to Agent" shortcut="S" @click="$emit('send-to-agent')">
+          <VaIcon name="send" />
         </VaIconButton>
 
         <!-- Clear -->
